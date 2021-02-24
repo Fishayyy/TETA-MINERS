@@ -17,7 +17,8 @@ from sklearn.neighbors import KNeighborsClassifier
 with open('iris-data-3.csv') as csvfile:
     dff = pd.read_csv(csvfile, delimiter=',')
     dff.drop_duplicates('ID')
-    X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']]
+    dff = pd.get_dummies(dff, columns=['color'])
+    X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color_Red', 'color_blue', 'color_pink', 'color_purple','color_red' ]]
     y = (dff["species"])
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=123)
@@ -31,6 +32,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 # YOUR CODE GOES HERE
 KNeighbors = KNeighborsClassifier(n_neighbors=5, metric="manhattan")
 KNeighbors.fit(X_train, y_train)
+pred = KNeighbors.predict(X_test)
+print(pred)
+
 
 '''
     3) Test your trained model with the given test set below and report the performance.
