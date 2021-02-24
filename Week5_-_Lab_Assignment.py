@@ -5,9 +5,7 @@ Lab 5
 ######### Part 1 ###########
 import numpy as np
 import pandas as pd
-from random import randint
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
 
 '''
     1-1) Download the iris-data-3 from Canvas, use pandas.read_csv to load it. This dataset has 5 input features: [sepal_length, sepal_width, petal_length, petal_width, color]
@@ -15,6 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier
     1-3) Split your data into train(70% of data) and test(30% of data) via random selection
 '''
 # YOUR CODE GOES HERE
+from random import randint
 seed = input("Enter a Random Seed #: ")
 
 try:
@@ -22,12 +21,13 @@ try:
 except ValueError:
    RANDOM_SEED = randint(1,9999)
    print(f"\'{seed}\' is an invalid choice. Using {RANDOM_SEED} insead.")
-   
+
+
 with open('iris-data-3.csv') as csvfile:
     dff = pd.read_csv(csvfile, delimiter=',')
     dff.drop_duplicates('ID')
-    dff = pd.get_dummies(dff, columns=['color'])
-    X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color_Red', 'color_blue', 'color_pink', 'color_purple','color_red' ]]
+    X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']]
+    X = pd.get_dummies(X, columns=['color'])
     y = (dff["species"])
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=123)
@@ -39,10 +39,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
     2-3) Print the confusion matrix for the results on the test set. 
 '''
 # YOUR CODE GOES HERE
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+
 KNeighbors = KNeighborsClassifier(n_neighbors=5, metric="manhattan")
 KNeighbors.fit(X_train, y_train)
 pred = KNeighbors.predict(X_test)
-print(pred)
+print(classification_report(y_test, pred))
+print(confusion_matrix(y_test, pred))
 
 
 '''
