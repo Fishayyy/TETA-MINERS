@@ -5,6 +5,7 @@ Lab 5
 ######### Part 1 ###########
 import numpy as np
 import pandas as pd
+from random import randint
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -14,6 +15,14 @@ from sklearn.neighbors import KNeighborsClassifier
     1-3) Split your data into train(70% of data) and test(30% of data) via random selection
 '''
 # YOUR CODE GOES HERE
+seed = input("Enter a Random Seed #: ")
+
+try:
+   RANDOM_SEED = int(seed)
+except ValueError:
+   RANDOM_SEED = randint(1,9999)
+   print(f"\'{seed}\' is an invalid choice. Using {RANDOM_SEED} insead.")
+   
 with open('iris-data-3.csv') as csvfile:
     dff = pd.read_csv(csvfile, delimiter=',')
     dff.drop_duplicates('ID')
