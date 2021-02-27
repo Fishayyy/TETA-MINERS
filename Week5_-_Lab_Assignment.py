@@ -6,6 +6,8 @@ Lab 5
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction import DictVectorizer
+
 
 '''
     1-1) Download the iris-data-3 from Canvas, use pandas.read_csv to load it. This dataset has 5 input features: [sepal_length, sepal_width, petal_length, petal_width, color]
@@ -79,6 +81,24 @@ print(confusion_matrix(Y_test, pred))
     4)  Use DictVectorizer from sklearn.feature_extraction to solve Q2
 '''
 # YOUR CODE GOES HERE  
+
+X = pd.get_dummies(dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']], columns=['color'])
+y = (dff["species"])
+
+x_dict = X.to_dict(orient='records')
+
+dv_x = DictVectorizer(sparse=False)
+x_encoded = dv_x.fit_transform(x_dict)
+
+X_train_encoded, X_test_encoded, y_train_encoded, y_test_encoded = train_test_split(x_encoded, y, test_size=0.3, random_state=RANDOM_SEED)
+
+KNeighbors = KNeighborsClassifier(n_neighbors=5, metric="manhattan")
+KNeighbors.fit(X_train_encoded, y_train_encoded)
+pred_encoded = KNeighbors.predict(X_test_encoded)
+print("\n=================RESULTS Q4=================")
+print(classification_report(y_test_encoded, pred_encoded))
+print(confusion_matrix(y_test_encoded, pred_encoded))
+
 
 
 '''
