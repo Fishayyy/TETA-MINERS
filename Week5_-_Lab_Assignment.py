@@ -82,8 +82,8 @@ print(confusion_matrix(Y_test, pred))
 '''
 # YOUR CODE GOES HERE  
 
-X = pd.get_dummies(dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']], columns=['color'])
-y = (dff["species"])
+X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']]
+y = dff["species"]
 
 x_dict = X.to_dict(orient='records')
 
@@ -95,13 +95,35 @@ X_train_encoded, X_test_encoded, y_train_encoded, y_test_encoded = train_test_sp
 KNeighbors = KNeighborsClassifier(n_neighbors=5, metric="manhattan")
 KNeighbors.fit(X_train_encoded, y_train_encoded)
 pred_encoded = KNeighbors.predict(X_test_encoded)
+
 print("\n=================RESULTS Q4=================")
 print(classification_report(y_test_encoded, pred_encoded))
 print(confusion_matrix(y_test_encoded, pred_encoded))
-
-
 
 '''
     5)  Use OneHotEncoder and LabelEncoder from sklearn.preprocessing to solve Q2
 '''
 # YOUR CODE GOES HERE  
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
+
+label_encoder = LabelEncoder()
+
+dff['color'] = label_encoder.fit_transform(dff['color'])
+X = dff[['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'color']]
+y = dff['species']
+
+enc = OneHotEncoder(handle_unknown='ignore')
+enc_df = pd.DataFrame(enc.fit_transform(dff[['color']]).toarray())
+
+dff = dff.join(enc_df).drop(columns=['color'])
+
+X_train_encoded, X_test_encoded, y_train_encoded, y_test_encoded = train_test_split(X, y, test_size=0.3, random_state=RANDOM_SEED)
+
+KNeighbors = KNeighborsClassifier(n_neighbors=5, metric="manhattan")
+KNeighbors.fit(X_train_encoded, y_train_encoded)
+pred_encoded = KNeighbors.predict(X_test_encoded)
+
+print("\n=================RESULTS Q5=================")
+print(classification_report(y_test_encoded, pred_encoded))
+print(confusion_matrix(y_test_encoded, pred_encoded))
