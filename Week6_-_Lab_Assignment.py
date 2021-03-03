@@ -12,17 +12,33 @@ Lab 6
 '''
 # YOUR CODE GOES HERE  
 from sklearn.datasets import load_boston
-X= load_boston()
-print(X.feature_names)
+from sklearn.model_selection import train_test_split
 
+X = load_boston()
+y = X['target']
+print(X['feature_names'], X['DESCR'])
+
+X_train, X_test, y_train, y_test = train_test_split(X['data'],y, test_size=0.2, random_state=123)
 
 '''
     2)  Try LinearRegression from sklearn.linear_model   
         Try it with and without normalization. Compare the results and pick the best trained model(for comparisson try different metrics from sklearn.metrics like: r2, mse, mae)
         (Hint: for normalizing your data set normalize=True)
-    
+
+        Link: https://stackoverflow.com/questions/54067474/comparing-results-from-standardscaler-vs-normalizer-in-linear-regression    
 '''
-# YOUR CODE GOES HERE  
+# YOUR CODE GOES HERE 
+from sklearn.linear_model import LinearRegression
+
+reg = LinearRegression(normalize=False)
+reg.fit(X_train, y_train)
+
+reg_pred = reg.predict(X_test)
+
+reg_norm = LinearRegression(normalize=True)
+reg_norm.fit(X_train, y_train)
+
+reg_norm_pred = reg_norm.predict(X_test)
 
 '''
     3) Write the equation of the resulted hyper-plane in Q2.
