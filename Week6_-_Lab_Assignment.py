@@ -4,6 +4,7 @@ Lab 6
 from random import randint
 
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
 
 seed = input("Enter a Random Seed #: ")
 
@@ -75,7 +76,13 @@ for n in k:
     5) Repeat Q2 with DecisionTreeRegressor from sklearn.tree. Tune the hyper-parameters (e.g. criterion) using cv techniques.
     
 '''
-# YOUR CODE GOES HERE  
+# YOUR CODE GOES HERE
+
+decision = DecisionTreeRegressor(criterion="mae")
+decision.fit(X_train,y_train)
+pred_KNRegressor = decision.predict(X_test)
+print("\n")
+print(decision.score(X_test, y_test)*100)
 
 '''
     6) Which model performs better on the test data?
