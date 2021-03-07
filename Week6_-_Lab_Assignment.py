@@ -2,6 +2,9 @@
 Lab 6
 '''
 from random import randint
+
+from sklearn.neighbors import KNeighborsRegressor
+
 seed = input("Enter a Random Seed #: ")
 
 try:
@@ -57,7 +60,15 @@ reg_norm_pred = reg_norm.predict(X_test)
 '''
     4)  Repeat Q2 with KNeighborsRegressor. Tune the hyper-parameters(e.g. n_neighbors & metric) using cv techniques. 
 '''
-# YOUR CODE GOES HERE  
+# YOUR CODE GOES HERE
+k = [1, 3, 5, 7, 9, 11, 13, 15]
+neighbors = {}
+for n in k:
+    neigh = KNeighborsRegressor(n_neighbors=n ,p=1)
+    neigh.fit(X_train,y_train)
+    pred_KNRegressor = neigh.predict(X_test)
+    neighbors[n] = pred_KNRegressor
+    print(neigh.score(X_test, y_test)*100)
 
 
 '''
