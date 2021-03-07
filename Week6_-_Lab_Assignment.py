@@ -1,7 +1,14 @@
 '''
 Lab 6
 '''
+from random import randint
+seed = input("Enter a Random Seed #: ")
 
+try:
+   RANDOM_SEED = int(seed)
+except ValueError:
+   RANDOM_SEED = randint(1,9999)
+   print(f"\'{seed}\' is an invalid choice. Using {RANDOM_SEED} insead.")
 
 ########## Part 1 ###########
 
@@ -16,9 +23,10 @@ from sklearn.model_selection import train_test_split
 
 X = load_boston()
 y = X['target']
-print(X['feature_names'], X['DESCR'])
+print(X['feature_names'])
+print(X['DESCR'])
 
-X_train, X_test, y_train, y_test = train_test_split(X['data'],y, test_size=0.2, random_state=123)
+X_train, X_test, y_train, y_test = train_test_split(X['data'],y, test_size=0.2, random_state=RANDOM_SEED)
 
 '''
     2)  Try LinearRegression from sklearn.linear_model   
