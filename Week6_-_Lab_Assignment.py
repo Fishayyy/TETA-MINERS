@@ -57,7 +57,16 @@ reg_norm_pred = reg_norm.predict(X_test)
     3) Write the equation of the resulted hyper-plane in Q2.
 '''
 
+print(f"\nCoefficients: {reg_norm.coef_}")
+print(f"Intercept: {reg_norm.intercept_}")
+equation = "\ny = "
 
+for i in range(len(reg_norm.coef_)):
+    equation += f"({reg_norm.coef_[i]})b_{i+1} + "
+
+equation += f"{reg_norm.intercept_}\n"
+
+print(equation)
 
 '''
     4)  Repeat Q2 with KNeighborsRegressor. Tune the hyper-parameters(e.g. n_neighbors & metric) using cv techniques. 
